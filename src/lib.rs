@@ -126,6 +126,42 @@ impl Tree {
         let sz = self.inner.size().to_int_size();
         Ok((sz.width(), sz.height()))
     }
+
+    #[pyo3(signature = (
+        id_prefix=None,
+        preserve_text=false,
+        coordinates_precision=8,
+        transforms_precision=8,
+        use_single_quote=false,
+        indent=4,
+        attributes_indent=None,
+    ))]
+    fn to_string(
+        &self,
+        id_prefix: Option<String>,
+        preserve_text: bool,
+        coordinates_precision: u8,
+        transforms_precision: u8,
+        use_single_quote: bool,
+        indent: Option<u8>,
+        attributes_indent: Option<u8>,
+    ) -> PyResult<String> {
+        Ok(self.inner.to_string(&usvg::WriteOptions {
+            id_prefix: id_prefix,
+            preserve_text,
+            coordinates_precision,
+            transforms_precision,
+            use_single_quote,
+            indent: match indent {
+                Some(i) => usvg::Indent::Spaces(i),
+                None => usvg::Indent::None,
+            },
+            attributes_indent: match attributes_indent {
+                Some(i) => usvg::Indent::Spaces(i),
+                None => usvg::Indent::None,
+            },
+        }))
+    }
 }
 
 #[pyfunction]

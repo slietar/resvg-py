@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class Options:
     @staticmethod
     def default() -> Options: ...
@@ -27,3 +30,13 @@ class Tree:
     @staticmethod
     def from_str(svg: str, opts: Options, /) -> Tree: ...
     def int_size(self) -> tuple[int, int]: ...
+    def to_string(
+        self,
+        id_prefix: Optional[str] = None,
+        preserve_text: bool = False,
+        coordinates_precision: int = 8,
+        transforms_precision: int = 8,
+        use_single_quote: bool = False,
+        indent: Optional[int] = 4,
+        attributes_indent: Optional[int] = None,
+    ) -> str: ...
